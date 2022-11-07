@@ -1,0 +1,187 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "id": 545925,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.9851659999999,
+                    40.0541710000001
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545925,
+                "SITE_NAME": "TOR",
+                "SITE_ID": "421010075",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "4901 GRANT AVENUE & JAMES STREET",
+                "CARBON_MONOXIDE_PPM": 0.62611182,
+                "NITROGEN_DIOXIDE_PPM": 21.5252266,
+                "OZONE_PPM": null,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": 16.5819985,
+                "SULFUR_DIOXIDE_PPB": null,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545926,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.186921,
+                    39.9228670000001
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545926,
+                "SITE_NAME": "RIT",
+                "SITE_ID": "421010055",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "24TH ST. & RITNER ST., PHILADELPHIA, PA 19145",
+                "CARBON_MONOXIDE_PPM": null,
+                "NITROGEN_DIOXIDE_PPM": null,
+                "OZONE_PPM": null,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": 18.3904818,
+                "SULFUR_DIOXIDE_PPB": 2.29839505,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545927,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.1424,
+                    39.9603000000001
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545927,
+                "SITE_NAME": "FAB",
+                "SITE_ID": "421010057",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "240 SPRING GARDEN STREET",
+                "CARBON_MONOXIDE_PPM": null,
+                "NITROGEN_DIOXIDE_PPM": null,
+                "OZONE_PPM": null,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": 24.2976159,
+                "SULFUR_DIOXIDE_PPB": null,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545928,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.080833,
+                    39.991389
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545928,
+                "SITE_NAME": "NEW",
+                "SITE_ID": "421010048",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "3900 RICHMOND",
+                "CARBON_MONOXIDE_PPM": 0.52145476,
+                "NITROGEN_DIOXIDE_PPM": 24.2504819,
+                "OZONE_PPM": 4.02040025,
+                "PM10_UG_M3": 18.3322527,
+                "PM25_UG_M3": 25.6009169,
+                "SULFUR_DIOXIDE_PPB": 1.89002679,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545929,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.207205,
+                    39.9888290000001
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545929,
+                "SITE_NAME": "MON",
+                "SITE_ID": "421010076",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "4100 MONTGOMERY DRIVE",
+                "CARBON_MONOXIDE_PPM": 1.46882639,
+                "NITROGEN_DIOXIDE_PPM": 38.3227981,
+                "OZONE_PPM": null,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": 21.3822531,
+                "SULFUR_DIOXIDE_PPB": null,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545930,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.0977,
+                    40.00892
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545930,
+                "SITE_NAME": "LABP",
+                "SITE_ID": "421010004",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "EAST LYCOMING ST., PHILADELPHIA, PA 19124",
+                "CARBON_MONOXIDE_PPM": null,
+                "NITROGEN_DIOXIDE_PPM": null,
+                "OZONE_PPM": 3.80677966,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": 27.3634413,
+                "SULFUR_DIOXIDE_PPB": null,
+                "SAMPLE_TIMESTAMP": 1667221200000,
+                "SAMPLE_HOUR": "9 - 10"
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 545931,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -75.011944,
+                    40.0763890000001
+                ]
+            },
+            "properties": {
+                "OBJECTID": 545931,
+                "SITE_NAME": "NEA",
+                "SITE_ID": "421010024",
+                "SITE_TYPE": null,
+                "SITE_ADDRESS": "GRANT AVENUE & ASHTON ROAD, PHILADELPHIA, PA",
+                "CARBON_MONOXIDE_PPM": null,
+                "NITROGEN_DIOXIDE_PPM": null,
+                "OZONE_PPM": 27.4610009,
+                "PM10_UG_M3": null,
+                "PM25_UG_M3": null,
+                "SULFUR_DIOXIDE_PPB": null,
+                "SAMPLE_TIMESTAMP": 1664287200000,
+                "SAMPLE_HOUR": "10 - 11"
+            }
+        }
+    ]
+}

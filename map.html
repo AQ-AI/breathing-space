@@ -77,7 +77,6 @@
     <!-- Page Header End -->
 
     <!-- Map Start Here -->
-
     <head>
         <!-- deck.gl standalone bundle -->
         <script src="https://unpkg.com/deck.gl@^8.8.0/dist.min.js"></script>
@@ -85,28 +84,23 @@
         <!-- Mapbox dependencies -->
         <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
         <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css" rel="stylesheet" />
+
+        <!-- mapbox -->
+        <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.js"></script>
+        <!-- mapbox style sheet -->
+        <link
+            href="https://api.tiles.mapbox.com/mapbox-gl-js/v1.13.0/mapbox-gl.css"
+            rel="stylesheet"
+        />
+        <!-- 03 jotform -->
+        <script src="https://js.jotform.com/JotForm.js"></script>
         <!-- local style -->
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/map.css" />
     </head>
 
-    <body>
-        <script>
-            // function to exit the panel on click
-            function hidePanel() {
-                document.getElementById("panel").style.opacity = 0;
-            }
-        </script>
-        <!-- map container that map.js points towards -->
-        <div id="map"></div>
-
-        <!-- panel and hover tooltip that update by map interaction -->
-        <tooltip id="panel">
-            <div class="exit" onclick="hidePanel()">X</div>
-            <div></div>
-        </tooltip>
-        <!-- add map.js -->
-        <script src="js/map.js"></script>
-    </body>
+    <body></body>
+  <!-- our map.js file -->
+  <script src="js/map.js"></script>
 
 
     <!-- Footer Start -->

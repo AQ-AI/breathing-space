@@ -1,3 +1,9 @@
+function map_range(value, low1, high1, low2, high2) {
+  return low2 + ((high2 - low2) * (value - low1)) / (high1 - low1);
+}
+const panel = document.getElementById("panel");
+const panelChild = document.querySelector("#panel :nth-child(2)");
+
 JF.initialize({ apiKey: "e83551f0a2681795a8e8ae7d06535735" });
 
 JF.getFormSubmissions("223104390365146", function (response) {
@@ -90,7 +96,64 @@ JF.getFormSubmissions("223104390365146", function (response) {
       }),
       firstLabelLayerId
     );
+    map.addSource('air-data', {
+      type: 'geojson',
+      data: 'https://opendata.arcgis.com/datasets/1839b35258604422b0b520cbb668df0d_0.geojson'
+    });
 
+    map.addLayer({
+      id: "air",
+      type: 'circle',
+      source: 'air-data',
+      filled: true,
+      stroke: false,
+      layout: {
+        // Make the layer visible by default.
+        'visibility': 'visible',
+      },
+      // getFillColor: [255, 0, 0],
+      // getFillColor: (d) => {
+      //   const abs = Math.abs(d.properties.PM25_UG_M3);
+      //   const color = map_range(abs, 0, 3.5, 0, 255); //lazy remap values to 0-255
+      //   //logic:
+      //   //If HSI_SCORE isn’t null:
+      //   //if less than 0, return something in a blue-hue, otherwise red hue
+      //   //if HSI_Score is null, return color with 0 alpha (transparent)
+      //   return d.properties.PM25_UG_M3
+      //     ? d.properties.PM25_UG_M3 < 0
+      //       ? [60, 60, color, 0]
+      //       : [color, 60, 72, color + 66]
+      //     : [0, 0, 0, 0];
+      // },
+      // getStrokeColor: [0, 0, 0, 255],
+      // pickable: true,
+      // highlightColor: [255, 255, 255, 200],
+      // onClick: (info) => {
+      //   flyToClick(info.coordinate);
+
+      //   panelChild.innerHTML = `<strong>Site address #${info.object.properties.SITE_ADDRESS
+      //     }</strong>
+      //           <br></br>
+      //           PM2.5 concentrations: ${info.object.properties.PM25_UG_M3.toFixed(
+      //       2 || "N/A"
+      //     )} <br></br>
+      //           S02 Concentrations: ${info.object.properties.SAMPLE_TIMESTAMP.toFixed(2 || "N/A")}
+      //           <br></br>
+      //           NO2 Concentrations: ${info.object.properties.SAMPLE_TIMESTAMP.toFixed(2 || "N/A")}
+      //           <br></br>
+      //           Coordinates:
+      //           ${info.coordinate[0].toFixed(3)},
+      //           ${info.coordinate[1].toFixed(3)}`;
+      //   panel.style.opacity = 1;
+      // },
+    });
+    // Center the map on the coordinates of any clicked circle from the 'circle' layer.
+    map.on('click', 'air', (e) => {
+      console.log("i get here", e.features[0].geometry.coordinates)
+      map.flyTo({
+        center: e.features[0].geometry.coordinates
+      });
+    });
     function getImageGallery(images, text) {
       const imageGallery = document.createElement("div");
       imageGallery.id = "image-gallery";
@@ -155,7 +218,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
         essential: true, // this animation is considered essential with respect to prefers-reduced-motion
       });
     }
-
     // create “current location” function, which doesn’t trigger until called upon.
     function addUserLocation(latitude, longitude) {
       return map.addLayer(

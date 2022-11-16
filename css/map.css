@@ -35,7 +35,6 @@ body {
     border-bottom-right-radius: 1rem;
 }
 
-
 #location-button:hover,
 #next-button:hover {
   color: black;
@@ -44,8 +43,8 @@ body {
  
 #location-button {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 10%;
+  left: 2%;
   padding: 1rem;
   background: black;
   color: white;

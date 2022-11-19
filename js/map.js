@@ -53,7 +53,8 @@ JF.getFormSubmissions("223104390365146", function (response) {
   mapboxgl.accessToken = "pk.eyJ1IjoibHNocmFjayIsImEiOiJjbDl3dXJubzkwNDliM3BxZWlnM3M5OHc5In0.DxE42LtIN08VTvEqZEyxsw";
 
   const map = new mapboxgl.Map({
-    container: document.body,
+    // container: document.body,
+    container: "reportMap",
     style: "mapbox://styles/lshrack/cl9wuv2q5000314qhpuc79ust", // Your style URL
     center: [-71.10326, 42.36476], // starting position [lng, lat]
     zoom: 12, // starting zoom
@@ -111,41 +112,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
         // Make the layer visible by default.
         'visibility': 'visible',
       },
-      // getFillColor: [255, 0, 0],
-      // getFillColor: (d) => {
-      //   const abs = Math.abs(d.properties.PM25_UG_M3);
-      //   const color = map_range(abs, 0, 3.5, 0, 255); //lazy remap values to 0-255
-      //   //logic:
-      //   //If HSI_SCORE isn’t null:
-      //   //if less than 0, return something in a blue-hue, otherwise red hue
-      //   //if HSI_Score is null, return color with 0 alpha (transparent)
-      //   return d.properties.PM25_UG_M3
-      //     ? d.properties.PM25_UG_M3 < 0
-      //       ? [60, 60, color, 0]
-      //       : [color, 60, 72, color + 66]
-      //     : [0, 0, 0, 0];
-      // },
-      // getStrokeColor: [0, 0, 0, 255],
-      // pickable: true,
-      // highlightColor: [255, 255, 255, 200],
-      // onClick: (info) => {
-      //   flyToClick(info.coordinate);
-
-      //   panelChild.innerHTML = `<strong>Site address #${info.object.properties.SITE_ADDRESS
-      //     }</strong>
-      //           <br></br>
-      //           PM2.5 concentrations: ${info.object.properties.PM25_UG_M3.toFixed(
-      //       2 || "N/A"
-      //     )} <br></br>
-      //           S02 Concentrations: ${info.object.properties.SAMPLE_TIMESTAMP.toFixed(2 || "N/A")}
-      //           <br></br>
-      //           NO2 Concentrations: ${info.object.properties.SAMPLE_TIMESTAMP.toFixed(2 || "N/A")}
-      //           <br></br>
-      //           Coordinates:
-      //           ${info.coordinate[0].toFixed(3)},
-      //           ${info.coordinate[1].toFixed(3)}`;
-      //   panel.style.opacity = 1;
-      // },
     });
     // Center the map on the coordinates of any clicked circle from the 'circle' layer.
     map.on('click', 'air', (e) => {
@@ -291,6 +257,101 @@ JF.getFormSubmissions("223104390365146", function (response) {
     // append the button
     document.body.appendChild(locationButton);
 
+  });
+
+  // limit the search engine boundary extent to greater Boston
+  const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
+  
+  // Initialize the geocoder aka the search engine
+  const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken, // Set the access token
+    mapboxgl: mapboxgl, // Set the mapbox-gl instance
+    placeholder: "Search Boston", //placeholder text for the search bar
+    bbox: bostonBounds, //limit search results to Philadelphia bounds
+  });
+  
+  // Add the geocoder to the map
+  map.addControl(geocoder);
+
+  //ENTER YOUR JOTFORM API KEY HERE
+  JF.initialize({ apiKey: "e83551f0a2681795a8e8ae7d06535735" });
+  
+  // Create a function to access the jotform submissions . Format: (formID, callback)
+  function getSubmissions() {
+  // ENTER YOUR NEW FORM SUBMISSION ID HERE
+    JF.getFormSubmissions("223193774186060", function (responses) {
+      // array to store all the submissions: we will use this to create the map
+    const submissions = [];
+    // for each responses
+    for (var i = 0; i < responses.length; i++) {
+      // create an object to store the submissions and structure as a json
+      const submissionProps = {};
+ 
+      submissionProps["type"] = "Feature";
+      submissionProps["geometry"] = {
+        type: "Point",
+      };
+      submissionProps["properties"] = {};
+ 
+      // add all fields of responses.answers to our object
+      const keys = Object.keys(responses[i].answers);
+      keys.forEach((answer) => {
+        let currentAnswer = responses[i].answers[answer].answer;
+        if (!currentAnswer) {
+          // delete the key if the answer is empty, such as the submit button
+          delete responses[i].answers[answer];
+          return;
+        }
+        const lookup = "name";
+        const entry = responses[i].answers[answer].name;
+ 
+      // convert lat and long to numbers from strings
+        if (entry === "latitude" || entry === "longitude") {
+          currentAnswer = parseFloat(currentAnswer);
+        }
+ 
+        submissionProps.properties[responses[i].answers[answer][lookup]] =
+          currentAnswer;
+      });
+ 
+      submissionProps.geometry["coordinates"] = [
+        submissionProps.properties.longitude,
+        submissionProps.properties.latitude,
+      ];
+ 
+      // add submission to submissions array
+      submissions.push(submissionProps);
+    }
+ 
+    console.log(submissions);
+
+    });
+  }
+  
+  // immediately call the function to get the submissions
+  getSubmissions();
+
+  map.on("load", () => {
+    console.log(map.getStyle());
+  });
+  
+  // instantiate a popup for the basemap
+  const basemapPopup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+  });
+  
+  // create a map.on mouse move event for “land-use” layers
+  map.on("mousemove", "landuse", (e) => {
+    console.log(e.features[0].properties.class);
+    basemapPopup
+      .setLngLat(e.lngLat)
+      .setHTML(`${e.features[0].properties.class}`)
+      .addTo(map);
+  });
+
+  map.on("mouseleave", "landuse", () => {
+    basemapPopup.remove();
   });
 
 });

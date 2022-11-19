@@ -1,5 +1,8 @@
 body {
     margin: 0;
+    padding: 0;
+    /* width: 100vw;
+    height: 100vh; */
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -60,4 +63,16 @@ body {
     #image-gallery img {
         width: 100vw;
     }
+}
+
+#geocodeMap {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+}
+
+#reportMap {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
 }

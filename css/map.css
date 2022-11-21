@@ -6,7 +6,7 @@ body {
     overflow: hidden;
     font-family: Arial, Helvetica, sans-serif;
 }
- 
+
 #image-gallery {
     position: fixed;
     top: 0;
@@ -24,14 +24,14 @@ body {
     flex-wrap: wrap;
     overflow: auto;
 }
- 
+
 #image-gallery-text,
 #current-location-text {
     color: white;
     background-color: black;
     padding: 1rem;
 }
- 
+
 #image-gallery-text {
     /* add border radius to only bottom corners */
     border-bottom-left-radius: 1rem;
@@ -40,26 +40,27 @@ body {
 
 #location-button:hover,
 #next-button:hover {
-  color: black;
-  background: white;
+    color: black;
+    background: white;
 }
- 
+
 #location-button {
-  position: absolute;
-  top: 10%;
-  left: 2%;
-  padding: 1rem;
-  background: black;
-  color: white;
-  cursor: pointer;
-  border-radius: 10rem;
-  z-index: 1;
+    position: absolute;
+    top: 10%;
+    left: 2%;
+    padding: 1rem;
+    background: black;
+    color: white;
+    cursor: pointer;
+    border-radius: 10rem;
+    z-index: 1;
 }
 
 @media screen and (max-width: 1000px) {
     body {
         overflow-y: auto;
     }
+
     #image-gallery img {
         width: 100vw;
     }
@@ -75,4 +76,44 @@ body {
     position: absolute;
     width: 100vw;
     height: 100vh;
+}
+
+/* select the search engine and change the background and font color */
+.mapboxgl-ctrl-geocoder {
+    background-color: black;
+    color: white;
+    border-radius: 1rem 0 0rem 1rem;
+}
+
+/* select all children elements of the search engine and make sure they are black and white too  */
+
+.mapboxgl-ctrl-geocoder * {
+    background-color: black !important;
+    color: white !important;
+    border-radius: 1rem;
+}
+
+/* make sure that the geocoder does not have an outline when it is selected */
+.mapboxgl-ctrl-geocoder input:focus {
+    outline: none;
+}
+
+/* increase the size of the popup close button */
+.mapboxgl-popup-close-button {
+    font-size: 1.25rem;
+}
+
+/* Change the background and dimensions of the popup to a cool color */
+.mapboxgl-popup-content {
+    background: linear-gradient(#e664642d, #9198e5b0);
+    width: fit-content;
+    outline: 2px solid black;
+    color: white;
+    backdrop-filter: blur(5px);
+}
+
+/* Change the little tip of the popup to black */
+.mapboxgl-popup-tip {
+    border-top-color: black !important;
+    border-bottom-color: black !important;
 }

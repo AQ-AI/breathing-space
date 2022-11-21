@@ -354,10 +354,9 @@ JF.getFormSubmissions("223104390365146", function (response) {
           },
         });
       });
-      console.log(submissions);
-
     });
   }
+
 
   // immediately call the function to get the submissions
   getSubmissions();
@@ -499,7 +498,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
       // submit the data to jotform and remove the popup
       popup.remove();
       JF.createFormSubmission(
-        "223144210321032",
+        "223104390365146",
         submission,
         function (response) {
           console.log("submission response", response);

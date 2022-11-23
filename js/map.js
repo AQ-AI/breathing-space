@@ -602,7 +602,7 @@ const basemapPopup = new mapboxgl.Popup({
 });
 
 // create a map.on mouse move event for “land-use” layers
-map.on("mousemove", "landuse", (e) => {
+map.on("mousemove", "geocode_test", (e) => {
   console.log(e.features[0].properties.class);
   basemapPopup
     .setLngLat(e.lngLat)
@@ -610,6 +610,6 @@ map.on("mousemove", "landuse", (e) => {
     .addTo(map);
 });
 
-map.on("mouseleave", "landuse", () => {
+map.on("mouseleave", "geocode_test", () => {
   basemapPopup.remove();
 });

@@ -294,3 +294,17 @@ JF.getFormSubmissions("223104390365146", function (response) {
   });
 
 });
+
+// limit the search engine boundary extent to greater Boston
+const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
+ 
+// Initialize the geocoder aka the search engine
+const geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken, // Set the access token
+  mapboxgl: mapboxgl, // Set the mapbox-gl instance
+  placeholder: "Search Boston", //placeholder text for the search bar
+  bbox: bostonBounds, //limit search results to Philadelphia bounds
+});
+ 
+// Add the geocoder to the map
+map.addControl(geocoder);

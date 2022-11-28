@@ -10,12 +10,12 @@ JF.getFormSubmissions("223104390365146", function (response) {
   console.log(response);
   // array to store all the submissions: we will use this to create the map
   const submissions = [];
-  console.log("created submissions")
+  // console.log("created submissions")
   // for each response
   for (var i = 0; i < response.length; i++) {
-    console.log("length of response?")
-    console.log(response.length)
-    console.log(i)
+    // console.log("length of response?")
+    // console.log(response.length)
+    // console.log(i)
     // create an object to store the submissions and structure as a json
     const submissionProps = {};
 
@@ -27,41 +27,46 @@ JF.getFormSubmissions("223104390365146", function (response) {
         response[i].answers[answer].answer;
     });
     if (submissionProps["Address Map Locator"] == null) {
-      console.log("hopping out!");
+      // console.log("hopping out!");
       continue;
     }
-    console.log("hi");
+    // console.log("hi");
     console.log(submissionProps["Address Map Locator"]);
     // convert location coordinates string to float array
     submissionProps["Address Map Locator"] = submissionProps[
       "Address Map Locator"
-    ].split(/\r?\n/).map((x) => parseFloat(x.replace(/[^\d.-]/g, "")))
+    ]
+      .split(/\r?\n/)
+      .map((x) => parseFloat(x.replace(/[^\d.-]/g, "")));
 
-    console.log(submissionProps);
+    // console.log(submissionProps);
 
     // add submission to submissions array
     submissions.push(submissionProps);
-
   }
 
-  console.log(submissions)
+  // console.log(submissions);
 
   // Import Layers from DeckGL
   const { MapboxLayer, ScatterplotLayer } = deck;
 
   // YOUR MAPBOX TOKEN HERE
-  mapboxgl.accessToken = "pk.eyJ1IjoibHNocmFjayIsImEiOiJjbDl3dXJubzkwNDliM3BxZWlnM3M5OHc5In0.DxE42LtIN08VTvEqZEyxsw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiYWlycG9sbHBoaWxseSIsImEiOiJjbGF3dXRqcTIwamNuM3dwa3JuamdyNGxoIn0.vcsXDKW-TC66e4VpuX1pJA";
 
   const map = new mapboxgl.Map({
     // container: document.body,
-    container: "reportMap",
-    style: "mapbox://styles/lshrack/cl9wuv2q5000314qhpuc79ust", // Your style URL
-    center: [-71.10326, 42.36476], // starting position [lng, lat]
+    container: "map",
+    style: "mapbox://styles/airpollphilly/clawv4g4p000014lgrz9qaljy", // Your style URL
+    // center: [-71.10326, 42.36476], // starting position [lng, lat]
+    center: [-75.1652, 39.9526], // center on philadelphia
     zoom: 12, // starting zoom
     projection: "globe", // display the map as a 3D globe
   });
 
   map.on("load", () => {
+    map.removeLayer("geocode_test");
+
     const firstLabelLayerId = map
       .getStyle()
       .layers.find((layer) => layer.type === "symbol").id;
@@ -89,35 +94,34 @@ JF.getFormSubmissions("223104390365146", function (response) {
           depthTest: false,
         },
         onClick: (info) => {
-          //ADD NEW INPUT TO GETIMAGE GALLERY: 
+          //ADD NEW INPUT TO GETIMAGE GALLERY:
           getImageGallery(info.object.fileUpload, info.object.describeThe);
           flyToClick(info.object["Address Map Locator"]);
         },
-
       }),
       firstLabelLayerId
     );
-    map.addSource('air-data', {
-      type: 'geojson',
-      data: 'https://opendata.arcgis.com/datasets/1839b35258604422b0b520cbb668df0d_0.geojson'
+    map.addSource("air-data", {
+      type: "geojson",
+      data: "https://opendata.arcgis.com/datasets/1839b35258604422b0b520cbb668df0d_0.geojson",
     });
 
     map.addLayer({
       id: "air",
-      type: 'circle',
-      source: 'air-data',
+      type: "circle",
+      source: "air-data",
       filled: true,
       stroke: false,
       layout: {
         // Make the layer visible by default.
-        'visibility': 'visible',
+        visibility: "visible",
       },
     });
     // Center the map on the coordinates of any clicked circle from the 'circle' layer.
-    map.on('click', 'air', (e) => {
-      console.log("i get here", e.features[0].geometry.coordinates)
+    map.on("click", "air", (e) => {
+      // console.log("i get here", e.features[0].geometry.coordinates);
       map.flyTo({
-        center: e.features[0].geometry.coordinates
+        center: e.features[0].geometry.coordinates,
       });
     });
     function getImageGallery(images, text) {
@@ -176,7 +180,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
       // append the image gallery to the body
       document.body.appendChild(imageGallery);
     }
-
 
     function flyToClick(coords) {
       map.flyTo({
@@ -256,7 +259,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
 
     // append the button
     document.body.appendChild(locationButton);
-
   });
 
   // limit the search engine boundary extent to greater Boston
@@ -266,7 +268,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken, // Set the access token
     mapboxgl: mapboxgl, // Set the mapbox-gl instance
-    placeholder: "Search Boston", //placeholder text for the search bar
+    placeholder: "Search Philly", //placeholder text for the search bar
     bbox: bostonBounds, //limit search results to Philadelphia bounds
   });
 
@@ -313,7 +315,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
           submissionProps.properties[responses[i].answers[answer][lookup]] =
             currentAnswer;
         });
-        console.log(submissionProps.properties)
+        // console.log(submissionProps.properties);
 
         submissionProps.geometry["coordinates"] = [
           submissionProps.properties.longitude,
@@ -357,7 +359,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
     });
   }
 
-
   // immediately call the function to get the submissions
   getSubmissions();
 
@@ -393,7 +394,10 @@ JF.getFormSubmissions("223104390365146", function (response) {
     }
 
     // Populate the hoverPopup and set its coordinates
-    hoverPopup.setLngLat(coordinates).setHTML(htmlContainer.outerHTML).addTo(map);
+    hoverPopup
+      .setLngLat(coordinates)
+      .setHTML(htmlContainer.outerHTML)
+      .addTo(map);
   });
 
   // hide the hoverPopup when the mouse leaves the layer
@@ -415,7 +419,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
 
   // on click of the map add a new point to the map
   map.on("click", (e) => {
-    // create a new geojson object from click
+    // createa new geojson object from click
     const newPoint = {
       type: "Feature",
       geometry: {
@@ -449,167 +453,170 @@ JF.getFormSubmissions("223104390365146", function (response) {
         },
       });
     }
+
+    //make callback function on submit to update the new point with the description and then submit to jotform
+    const updateDescription = (location) => {
+      /**
+       * this function will update the description of the new point and then submit the data to jotform.
+       * Since it is a function it will only trigger when called upon by the submit button.
+       * @param {string} location - the location of the new point
+       * @param {string} description - the description of the new point
+       * @param {object} submission - the submission object
+       */
+
+      // clear the existing timeout if it is about to trigger
+      clearTimeout(timeout);
+
+      // get the description from the input
+      const description = document.getElementById("description").value;
+      newPoint.properties.description = description;
+      newPoint.properties.placeName = location;
+      // add name and email to newpoint
+      newPoint.properties.name = document.getElementById("name").value;
+      newPoint.properties.email = document.getElementById("email").value;
+
+      map.getSource("newPoint").setData(newPoint);
+
+      // add a new jotform submission
+      const submission = new Object();
+
+      /**
+       * MAKE SURE TO UPDATE THE NUMBERS INSIDE OF THE SQUARE BRACKETS HERE TO CORRESPOND TO THE WAY YOU STRUCTURED YOUR JOFORM
+       * REFER TO MY EMAIL TO SEE HOW YOUR ANSWERS ARE COMING IN
+       * THANKS
+       */
+
+      // name
+      submission[3] = newPoint.properties.name;
+      // email
+      submission[4] = newPoint.properties.email;
+      // place name
+      submission[5] = newPoint.properties.placeName;
+      // latitude
+      submission[6] = newPoint.geometry.coordinates[1];
+      // longitude
+      submission[7] = newPoint.geometry.coordinates[0];
+      // description
+      submission[9] = newPoint.properties.description;
+
+      if (
+        // if everything has been filled out
+        newPoint.properties.description &&
+        newPoint.properties.name &&
+        newPoint.properties.email
+      ) {
+        // submit the data to jotform and remove the popup
+        popup.remove();
+        JF.createFormSubmission(
+          "223144210321032",
+          submission,
+          function (response) {
+            console.log("submission response", response);
+
+            // assign a timeout to the global timeout variable and reload the map after 3 seconds
+            timeout = setTimeout(() => {
+              getSubmissions();
+            }, 3000);
+          }
+        );
+      } else {
+        alert("Please fill out all fields");
+        // assign a yellow outline to the popup
+      }
+    };
+
+    async function getLocationName() {
+      // reverse geocode the point using fetch
+      await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${mapboxgl.accessToken}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const location = data.features[0].place_name
+            .split(",")
+            .slice(0, 2)
+            .join(",");
+
+          //   add a popup to the new point with a textarea input field
+          const htmlContainer = document.createElement("div");
+          const title = document.createElement("h3");
+          title.textContent = location;
+
+          // create name and email input fields
+          const nameInput = document.createElement("input");
+          nameInput.setAttribute("type", "text");
+          nameInput.setAttribute("id", "name");
+          nameInput.setAttribute("placeholder", "name");
+          nameInput.addEventListener("input", (e) => {
+            newPoint.properties.name = e.target.value;
+          });
+
+          const emailInput = document.createElement("input");
+          emailInput.setAttribute("type", "email");
+          emailInput.setAttribute("id", "email");
+          emailInput.setAttribute("placeholder", "email");
+          emailInput.addEventListener("input", (e) => {
+            newPoint.properties.email = e.target.value;
+          });
+
+          // create description input
+          const textarea = document.createElement("textarea");
+          textarea.id = "description";
+          textarea.placeholder = "description";
+          textarea.style.resize = "none";
+
+          // create submit button
+          const submitButton = document.createElement("button");
+          submitButton.id = "submit";
+          submitButton.textContent = "Submit";
+
+          // append all the elements to the html container
+          htmlContainer.appendChild(title);
+          htmlContainer.appendChild(textarea);
+          htmlContainer.appendChild(nameInput);
+          htmlContainer.appendChild(emailInput);
+          htmlContainer.appendChild(submitButton);
+
+          // add the popup to the map
+          popup
+            .setLngLat([e.lngLat.lng, e.lngLat.lat])
+            .setHTML(htmlContainer.outerHTML)
+            .addTo(map);
+
+          // get the newly added submit button and call the updateDescription function on click
+          const appendedSubmitButton = document.getElementById("submit");
+          appendedSubmitButton.addEventListener("click", function () {
+            updateDescription(location);
+          });
+        });
+    }
+    // call the getLocationName function, which triggers the popup and updateDescription function
+    getLocationName();
   });
 
-  //make callback function on submit to update the new point with the description and then submit to jotform
-  const submitForm = (location) => {
-    /**
-     * this function will update the description of the new point and then submit the data to jotform.
-     * Since it is a function it will only trigger when called upon by the submit button.
-     * @param {string} location - the location of the new point
-     * @param {string} description - the description of the new point
-     * @param {object} submission - the submission object
-     */
-
-    // clear the existing timeout if it is about to trigger
-    clearTimeout(timeout);
-
-    // get the description from the input
-    const description = document.getElementById("description").value;
-    newPoint.properties.description = description;
-    newPoint.properties.placeName = location;
-    // add name and email to newpoint
-    newPoint.properties.name = document.getElementById("name").value;
-    newPoint.properties.email = document.getElementById("email").value;
-
-    map.getSource("newPoint").setData(newPoint);
-
-    // add a new jotform submission
-    const submission = new Object();
-    // name
-    submission[3] = newPoint.properties.name;
-    // email
-    submission[4] = newPoint.properties.email;
-    // place name
-    submission[5] = newPoint.properties.placeName;
-    // latitude
-    submission[6] = newPoint.geometry.coordinates[1];
-    // longitude
-    submission[7] = newPoint.geometry.coordinates[0];
-    // description
-    submission[9] = newPoint.properties.description;
-
-    if (
-      // if everything has been filled out
-      newPoint.properties.description &&
-      newPoint.properties.name &&
-      newPoint.properties.email
-    ) {
-      // submit the data to jotform and remove the popup
+  // close the click popup when pressing the escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
       popup.remove();
-      JF.createFormSubmission(
-        "223104390365146",
-        submission,
-        function (response) {
-          console.log("submission response", response);
-
-          // assign a timeout to the global timeout variable and reload the map after 3 seconds
-          timeout = setTimeout(() => {
-            getSubmissions();
-          }, 3000);
-        }
-      );
-    } else {
-      alert("Please fill out all fields");
-      // assign a yellow outline to the popup
     }
-  };
+  });
 
-  function newSubmission() {
-    // reverse geocode the point using fetch
-    fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${e.lngLat.lng},${e.lngLat.lat}.json?access_token=${mapboxgl.accessToken}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const location = data.features[0].place_name
-          .split(",")
-          .slice(0, 2)
-          .join(",");
+  // instantiate a popup for the basemap
+  const basemapPopup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false,
+  });
 
-        //   add a popup to the new point with a textarea input field
-        const htmlContainer = document.createElement("div");
-        const title = document.createElement("h3");
-        title.textContent = location;
+  // create a map.on mouse move event for “land-use” layers
+  map.on("mousemove", "geocode_test", (e) => {
+    // console.log(e.features[0].properties.class);
+    basemapPopup
+      .setLngLat(e.lngLat)
+      .setHTML(`${e.features[0].properties.class}`)
+      .addTo(map);
+  });
 
-        // create name and email input fields
-        const nameInput = document.createElement("input");
-        nameInput.setAttribute("type", "text");
-        nameInput.setAttribute("id", "name");
-        nameInput.setAttribute("placeholder", "name");
-        nameInput.addEventListener("input", (e) => {
-          newPoint.properties.name = e.target.value;
-        });
-
-        const emailInput = document.createElement("input");
-        emailInput.setAttribute("type", "email");
-        emailInput.setAttribute("id", "email");
-        emailInput.setAttribute("placeholder", "email");
-        emailInput.addEventListener("input", (e) => {
-          newPoint.properties.email = e.target.value;
-        });
-
-        // create description input
-        const textarea = document.createElement("textarea");
-        textarea.id = "description";
-        textarea.placeholder = "description";
-        textarea.style.resize = "none";
-
-        // create submit button
-        const submitButton = document.createElement("button");
-        submitButton.id = "submit";
-        submitButton.textContent = "Submit";
-
-        // append all the elements to the html container
-        htmlContainer.appendChild(title);
-        htmlContainer.appendChild(textarea);
-        htmlContainer.appendChild(nameInput);
-        htmlContainer.appendChild(emailInput);
-        htmlContainer.appendChild(submitButton);
-
-        // add the popup to the map
-        popup
-          .setLngLat([e.lngLat.lng, e.lngLat.lat])
-          .setHTML(htmlContainer.outerHTML)
-          .addTo(map);
-
-        // get the newly added submit button and call the submitForm function on click
-        const appendedSubmitButton = document.getElementById("submit");
-        appendedSubmitButton.addEventListener("click", function () {
-          submitForm(location);
-        });
-      });
-  }
-  // call the newSubmission function, which triggers the popup and submitForm function
-  newSubmission();
-});
-
-// close the click popup when pressing the escape key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    popup.remove();
-  }
-});
-
-map.on("load", () => {
-  console.log(map.getStyle());
-});
-
-// instantiate a popup for the basemap
-const basemapPopup = new mapboxgl.Popup({
-  closeButton: false,
-  closeOnClick: false,
-});
-
-// create a map.on mouse move event for “land-use” layers
-map.on("mousemove", "geocode_test", (e) => {
-  console.log(e.features[0].properties.class);
-  basemapPopup
-    .setLngLat(e.lngLat)
-    .setHTML(`${e.features[0].properties.class}`)
-    .addTo(map);
-});
-
-map.on("mouseleave", "geocode_test", () => {
-  basemapPopup.remove();
+  map.on("mouseleave", "geocode_test", () => {
+    basemapPopup.remove();
+  });
 });

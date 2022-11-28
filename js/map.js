@@ -50,11 +50,11 @@ JF.getFormSubmissions("223104390365146", function (response) {
   const { MapboxLayer, ScatterplotLayer } = deck;
 
   // YOUR MAPBOX TOKEN HERE
-  mapboxgl.accessToken = "pk.eyJ1IjoibHNocmFjayIsImEiOiJjbDl3dXJubzkwNDliM3BxZWlnM3M5OHc5In0.DxE42LtIN08VTvEqZEyxsw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiYWlycG9sbHBoaWxseSIsImEiOiJjbGF3dXRqcTIwamNuM3dwa3JuamdyNGxoIn0.vcsXDKW-TC66e4VpuX1pJA";
 
   const map = new mapboxgl.Map({
     container: document.body,
-    style: "mapbox://styles/lshrack/cl9wuv2q5000314qhpuc79ust", // Your style URL
+    style: "mapbox://styles/airpollphilly/clawv4g4p000014lgrz9qaljy", // Your style URL
     center: [-71.10326, 42.36476], // starting position [lng, lat]
     zoom: 12, // starting zoom
     projection: "globe", // display the map as a 3D globe
@@ -294,3 +294,17 @@ JF.getFormSubmissions("223104390365146", function (response) {
   });
 
 });
+
+// limit the search engine boundary extent to greater Boston
+const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
+ 
+// Initialize the geocoder aka the search engine
+const geocoder = new MapboxGeocoder({
+  accessToken: mapboxgl.accessToken, // Set the access token
+  mapboxgl: mapboxgl, // Set the mapbox-gl instance
+  placeholder: "Search Boston", //placeholder text for the search bar
+  bbox: bostonBounds, //limit search results to Philadelphia bounds
+});
+ 
+// Add the geocoder to the map
+map.addControl(geocoder);

@@ -91,7 +91,7 @@ body {
 }
 
 #menu a {
-  font-size: 13px;
+  font-size: 16px;
   color: #404040;
   display: block;
   margin: 0;
@@ -112,7 +112,7 @@ body {
 }
 
 #menu a.active {
-  background-color: #3887be;
+  background-color: #000000;
   color: #ffffff;
 }
 
@@ -233,13 +233,6 @@ img {
   height: 30px;
 }
 
-/* change the popup style */
-.mapboxgl-popup>* {
-  background-color: black;
-  color: white;
-  border-radius: 0;
-  border: 1px solid white;
-}
 
 .mapboxgl-popup * {
   margin: 0.25rem;

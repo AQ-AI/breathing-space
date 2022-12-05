@@ -353,10 +353,12 @@ map.on('idle', () => {
   }
 
   // Enumerate ids of the layers.
-  const toggleableLayerIds = ['penn_traffic'];
+  const toggleableLayerIds = [['penn_traffic', 'Congestion']];
 
   // Set up the corresponding toggle button for each layer.
-  for (const id of toggleableLayerIds) {
+  for (const id_pair of toggleableLayerIds) {
+    button_name = id_pair[1]
+    id = id_pair[0]
       // Skip layers that already have a button set up.
       if (document.getElementById(id)) {
           continue;
@@ -366,12 +368,12 @@ map.on('idle', () => {
       const link = document.createElement('a');
       link.id = id;
       link.href = '#';
-      link.textContent = id;
+      link.textContent = button_name;
       link.className = 'active';
 
       // Show or hide layer when the toggle is clicked.
       link.onclick = function (e) {
-          const clickedLayer = this.textContent;
+          const clickedLayer = this.id;
           e.preventDefault();
           e.stopPropagation();
 

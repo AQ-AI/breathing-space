@@ -4,19 +4,27 @@ function map_range(value, low1, high1, low2, high2) {
 const panel = document.getElementById("panel");
 const panelChild = document.querySelector("#panel :nth-child(2)");
 
+/*
+async function createMap() {
+  console.log("running create map")
+  phillyCensus = await fetch("./data/new_roads.geojson")
+    .then((response) => response.json())
+    .catch((error) => console.log(error));
+  console.log(phillyCensus)
+  console.log("made it through")
+}
+createMap();
+
+setTimeout(() => {  console.log("hello"); console.log(phillyCensus); }, 5000);
+*/
 JF.initialize({ apiKey: "e83551f0a2681795a8e8ae7d06535735" });
 
 JF.getFormSubmissions("223104390365146", function (response) {
   console.log(response);
   // array to store all the submissions: we will use this to create the map
   const submissions = [];
-  // console.log("created submissions")
   // for each response
   for (var i = 0; i < response.length; i++) {
-    // console.log("length of response?")
-    // console.log(response.length)
-    // console.log(i)
-    // create an object to store the submissions and structure as a json
     const submissionProps = {};
 
     // add all fields of response.answers to our object
@@ -58,14 +66,89 @@ JF.getFormSubmissions("223104390365146", function (response) {
     // container: document.body,
     container: "map",
     style: "mapbox://styles/airpollphilly/clawv4g4p000014lgrz9qaljy", // Your style URL
-    // center: [-71.10326, 42.36476], // starting position [lng, lat]
     center: [-75.1652, 39.9526], // center on philadelphia
     zoom: 12, // starting zoom
     projection: "globe", // display the map as a 3D globe
   });
 
   map.on("load", () => {
-    map.removeLayer("geocode_test");
+    /*
+    console.log(phillyCensus)
+    //   add source for philly data
+    console.log("trying to add source")
+    map.addSource("phillyPop", {
+      type: "geojson",
+      data: phillyCensus,
+    });
+    console.log("trying to add layer")
+    map.removeLayer("penn_traffic")
+    // add layer for philly data
+    map.addLayer({
+      id: "penn_traffic",
+      type: "line",
+      source: "phillyPop", // reference the data source
+      layout: {},
+      paint: {
+        // style the layer based on POP_DENSITY property
+           "line-color": [
+              "interpolate",
+              ["exponential", 1],
+              [
+                "get",
+                "avg_annual_daily_traffic"
+              ],
+              0,
+              "hsl(100, 89%, 52%)",
+              150,
+              "hsl(54, 91%, 46%)",
+              1000,
+              "hsl(0, 91%, 46%)",
+              132139,
+              "hsl(0, 87%, 30%)"
+          ],
+       },
+    });*/
+
+    // create legend
+    const legend = document.getElementById("legend");
+  
+    //   create a title for the legend
+    const title = document.createElement("h2");
+    title.id = "legend-title";
+    title.textContent = "Congestion";
+    legend.appendChild(title);
+  
+    //   create a child element for the legend explaining the metric
+    const description = document.createElement("p");
+    description.id = "legend-description";
+    description.textContent = "Average Annual Daily Traffic";
+    legend.appendChild(description);
+  
+    //   create a container for the actual legend items
+    const ramp = document.createElement("div");
+    ramp.className = "legend-items";
+  
+    
+    // get the values and color for the legend from the same scale as the choropleth layer
+    const [legendValues, legendColors] = [[0,150,1000,132139], ["hsl(100, 89%, 52%)", "hsl(54, 91%, 46%)","hsl(0, 91%, 46%)","hsl(0, 87%, 30%)"]];
+    
+    //   create a legend item for each value and color
+    legendValues.forEach((layer, i) => {
+      const color = legendColors[i];
+      const item = document.createElement("div");
+      const key = document.createElement("div");
+      key.className = "legend-key";
+      key.style.backgroundColor = color;
+  
+      const value = document.createElement("div");
+      value.innerHTML = `${layer}`;
+      item.appendChild(key);
+      item.appendChild(value);
+      ramp.appendChild(item);
+    });
+    //  add the legend items to the legend
+    legend.appendChild(ramp);
+
 
     const firstLabelLayerId = map
       .getStyle()
@@ -261,6 +344,62 @@ JF.getFormSubmissions("223104390365146", function (response) {
     document.body.appendChild(locationButton);
   });
 
+  // After the last frame rendered before the map enters an "idle" state.
+map.on('idle', () => {
+  console.log(map.getStyle().layers)
+  // If these two layers were not added to the map, abort
+  if (!map.getLayer('deckgl-circle')) {
+      return;
+  }
+
+  // Enumerate ids of the layers.
+  const toggleableLayerIds = [['penn_traffic', 'Congestion']];
+
+  // Set up the corresponding toggle button for each layer.
+  for (const id_pair of toggleableLayerIds) {
+    button_name = id_pair[1]
+    id = id_pair[0]
+      // Skip layers that already have a button set up.
+      if (document.getElementById(id)) {
+          continue;
+      }
+
+      // Create a link.
+      const link = document.createElement('a');
+      link.id = id;
+      link.href = '#';
+      link.textContent = button_name;
+      link.className = 'active';
+
+      // Show or hide layer when the toggle is clicked.
+      link.onclick = function (e) {
+          const clickedLayer = this.id;
+          e.preventDefault();
+          e.stopPropagation();
+
+          const visibility = map.getLayoutProperty(
+              clickedLayer,
+              'visibility'
+          );
+
+          // Toggle layer visibility by changing the layout object's visibility property.
+          if (visibility === 'visible') {
+              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+              this.className = '';
+          } else {
+              this.className = 'active';
+              map.setLayoutProperty(
+                  clickedLayer,
+                  'visibility',
+                  'visible'
+              );
+          }
+      };
+
+      const layers = document.getElementById('menu');
+      layers.appendChild(link);
+  }
+});
   // limit the search engine boundary extent to greater Boston
   const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
 
@@ -539,8 +678,8 @@ JF.getFormSubmissions("223104390365146", function (response) {
 
           //   add a popup to the new point with a textarea input field
           const htmlContainer = document.createElement("div");
-          const title = document.createElement("h3");
-          title.textContent = location;
+          const title = document.createElement("h4");
+          title.textContent = "Suggest sensor location at " + location;
 
           // create name and email input fields
           const nameInput = document.createElement("input");
@@ -562,7 +701,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
           // create description input
           const textarea = document.createElement("textarea");
           textarea.id = "description";
-          textarea.placeholder = "description";
+          textarea.placeholder = "reason for sensor location";
           textarea.style.resize = "none";
 
           // create submit button
@@ -605,18 +744,5 @@ JF.getFormSubmissions("223104390365146", function (response) {
   const basemapPopup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false,
-  });
-
-  // create a map.on mouse move event for “land-use” layers
-  map.on("mousemove", "geocode_test", (e) => {
-    // console.log(e.features[0].properties.class);
-    basemapPopup
-      .setLngLat(e.lngLat)
-      .setHTML(`${e.features[0].properties.class}`)
-      .addTo(map);
-  });
-
-  map.on("mouseleave", "geocode_test", () => {
-    basemapPopup.remove();
   });
 });

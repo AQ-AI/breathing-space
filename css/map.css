@@ -78,6 +78,48 @@ body {
   height: 100vh;
 }
 
+#menu {
+  background: #fff;
+  position: absolute;
+  z-index: 1;
+  top: 200px;
+  right: 10px;
+  border-radius: 3px;
+  width: 120px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  font-family: 'Open Sans', sans-serif;
+}
+
+#menu a {
+  font-size: 16px;
+  color: #404040;
+  display: block;
+  margin: 0;
+  padding: 0;
+  padding: 10px;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+#menu a:last-child {
+  border: none;
+}
+
+#menu a:hover {
+  background-color: #f8f8f8;
+  color: #404040;
+}
+
+#menu a.active {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+#menu a.active:hover {
+  background: #3074a4;
+}
+
 /* select the search engine and change the background and font color */
 .mapboxgl-ctrl-geocoder {
   background-color: transparent;
@@ -116,4 +158,112 @@ body {
 .mapboxgl-popup-tip {
   border-top-color: black !important;
   border-bottom-color: black !important;
+}
+
+.map-overlay {
+  position: absolute;
+  right: 0;
+  background: black;
+  margin-right: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  color: white;
+  border: 1px solid white;
+
+}
+ 
+/* place the info panel top right */
+#features {
+  top: 0;
+  margin-top: 20px;
+  width: 250px;
+}
+
+#features h2,
+#features h3 {
+  padding: 0 10px;
+}
+
+/* place the legend bottom right */
+#legend {
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  margin-bottom: 40px;
+  bottom: 0;
+}
+
+/* landuse-legend */
+#landuse-legend {
+  padding: 10px;
+  margin: 1rem;
+  bottom: 0;
+  left: 0;
+  width: fit-content;
+}
+
+/* adjust legend info */
+#legend-title,
+#legend-description {
+  color: #fff;
+  margin: 0.5rem 0;
+}
+
+/* set the container for the legend squares to flex */
+.legend-items {
+  display: flex;
+}
+
+.legend-item-label {
+  margin: 0 0.5rem;
+  display: inline-block;
+}
+
+
+img {
+  width: 90%;
+  height: auto;
+  margin: 0.5rem;
+}
+
+/* adjust legend squares */
+.legend-key {
+  display: inline-block;
+  width: 50px;
+  height: 30px;
+}
+
+
+.mapboxgl-popup * {
+  margin: 0.25rem;
+}
+
+/* mobile only */
+@media screen and (max-width: 600px) {
+ 
+  body {
+      overflow: hidden;
+  }
+
+  .map-overlay {
+      margin: 0;
+  }
+
+  #legend {
+      z-index: 10;
+      width: 100%;
+      left: 0;
+      margin: 0;
+      border: none;
+      padding: 10px 0;
+
+  }
+
+  #features {
+      top: 0;
+      margin-top: 0;
+      width: 100%;
+      padding: 5px 0;
+      border: none;
+  }
 }

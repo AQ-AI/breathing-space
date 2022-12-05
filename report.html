@@ -30,11 +30,12 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/report.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h1 class="m-0">Breathing Space</h1>
         </a>
@@ -60,104 +61,6 @@
     <!-- Page Header End -->
 
     <script style="display: none;" type="text/javascript" src="https://form.jotform.com/jsform/223104390365146"></script>
-    
-    <!-- <iframe
-      id="JotFormIFrame-223104390365146"
-      title="Report an Incident"
-      onload="window.parent.scrollTo(0,0)"
-      allowtransparency="true"
-      allowfullscreen="true"
-      allow="geolocation; microphone; camera"
-      src="https://form.jotform.com/airpollphilly/report-an-incident"
-      frameborder="0"
-      style="
-      min-width: 100%;
-      height:539px;
-      border:none;"
-      scrolling="no"
-    >
-    </iframe>
-
-    <script type="text/javascript">
-      var ifr = document.getElementById("JotFormIFrame-223104390365146");
-      if (ifr) {
-        var src = ifr.src;
-        var iframeParams = [];
-        if (window.location.href && window.location.href.indexOf("?") > -1) {
-          iframeParams = iframeParams.concat(window.location.href.substr(window.location.href.indexOf("?") + 1).split('&'));
-        }
-        if (src && src.indexOf("?") > -1) {
-          iframeParams = iframeParams.concat(src.substr(src.indexOf("?") + 1).split("&"));
-          src = src.substr(0, src.indexOf("?"))
-        }
-        iframeParams.push("isIframeEmbed=1");
-        ifr.src = src + "?" + iframeParams.join('&');
-      }
-      window.handleIFrameMessage = function(e) {
-        if (typeof e.data === 'object') { return; }
-        var args = e.data.split(":");
-        if (args.length > 2) { iframe = document.getElementById("JotFormIFrame-" + args[(args.length - 1)]); } else { iframe = document.getElementById("JotFormIFrame"); }
-        if (!iframe) { return; }
-        switch (args[0]) {
-          case "scrollIntoView":
-            iframe.scrollIntoView();
-            break;
-          case "setHeight":
-            iframe.style.height = args[1] + "px";
-            break;
-          case "collapseErrorPage":
-            if (iframe.clientHeight > window.innerHeight) {
-              iframe.style.height = window.innerHeight + "px";
-            }
-            break;
-          case "reloadPage":
-            window.location.reload();
-            break;
-          case "loadScript":
-            if( !window.isPermitted(e.origin, ['jotform.com', 'jotform.pro']) ) { break; }
-            var src = args[1];
-            if (args.length > 3) {
-                src = args[1] + ':' + args[2];
-            }
-            var script = document.createElement('script');
-            script.src = src;
-            script.type = 'text/javascript';
-            document.body.appendChild(script);
-            break;
-          case "exitFullscreen":
-            if      (window.document.exitFullscreen)        window.document.exitFullscreen();
-            else if (window.document.mozCancelFullScreen)   window.document.mozCancelFullScreen();
-            else if (window.document.mozCancelFullscreen)   window.document.mozCancelFullScreen();
-            else if (window.document.webkitExitFullscreen)  window.document.webkitExitFullscreen();
-            else if (window.document.msExitFullscreen)      window.document.msExitFullscreen();
-            break;
-        }
-        var isJotForm = (e.origin.indexOf("jotform") > -1) ? true : false;
-        if(isJotForm && "contentWindow" in iframe && "postMessage" in iframe.contentWindow) {
-          var urls = {"docurl":encodeURIComponent(document.URL),"referrer":encodeURIComponent(document.referrer)};
-          iframe.contentWindow.postMessage(JSON.stringify({"type":"urls","value":urls}), "*");
-        }
-      };
-      window.isPermitted = function(originUrl, whitelisted_domains) {
-        var url = document.createElement('a');
-        url.href = originUrl;
-        var hostname = url.hostname;
-        var result = false;
-        if( typeof hostname !== 'undefined' ) {
-          whitelisted_domains.forEach(function(element) {
-              if( hostname.slice((-1 * element.length - 1)) === '.'.concat(element) ||  hostname === element ) {
-                  result = true;
-              }
-          });
-          return result;
-        }
-      };
-      if (window.addEventListener) {
-        window.addEventListener("message", handleIFrameMessage, false);
-      } else if (window.attachEvent) {
-        window.attachEvent("onmessage", handleIFrameMessage);
-      }
-    </script> -->
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
@@ -175,6 +78,150 @@
     </div>
     <!-- Copyright End -->
 
+     <!-- First Tutorial Part -->
+     <div class="modal fade " id="reportFormTutorial1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="reportFormTutorialLabel1" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportFormTutorialLabel1">Report Incident Tutorial</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p style="color: black;" class="text-center"> 
+              We want you to recommend locations
+              that you want to understand the air 
+              pollution. It is important community
+              members understand air pollution in 
+              locations they care about. 
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" data-bs-target="#reportFormTutorial2" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Second Tutorial Part -->
+    <div class="modal fade" data-bs-interval="false" id="reportFormTutorial2" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="reportFormTutorialLabel2" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportFormTutorialLabel2">Report Incident Tutorial</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Carousel Starts here -->
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+              <!-- Indicators -->
+              <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+              </div>
+              <!-- Actual Carousel Slides -->
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="img/tutorial-white-bg.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <p style="color: black;">
+                      This is the reporting form, which
+                      allows you to suggest areas of the
+                      city which you would like to put 
+                      an air pollution sensor. <br>
+
+                      To identify a location suitable for a
+                      sensor, take a look for the following:
+                    </p>
+                    
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="img/tutorial-white-bg.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Idling cars</h5>
+                    <p style="color: black;">
+                      Exhaust from motor vehicles is a key component 
+                      of ground-level ozone or smog, a contributor to 
+                      climate change and causes serious health effects.
+                    </p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="img/tutorial-white-bg.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Industrial fires/waste incineration</h5>
+                    <p style="color: black;">
+                      Industrial fires such as tyre fires are harmful
+                      sources of air pollution that contain “volatile
+                      organic compounds” which are damaging to 
+                      lungs, particularly in young children.
+                    </p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="img/tutorial-white-bg.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <h5>Dust and pollen</h5>
+                    <p style="color: black;">
+                      Dust (from artificial or natural sources)
+                      can be a big contributor to air pollution and 
+                      effects human health.   
+                    </p>
+                    <button class="btn btn-primary float-center" data-bs-target="#reportFormTutorial3" data-bs-toggle="modal" data-bs-dismiss="modal">Continue</button>
+                  </div>
+                  <!-- <div class="">
+                    <button class="btn btn-primary" data-bs-target="#reportFormTutorial3" data-bs-toggle="modal" data-bs-dismiss="modal">Continue</button>
+                  </div>                  -->
+                </div>
+              </div>
+              <!-- Previous and Next Buttons -->
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div> 
+          <!-- <div class="modal-footer">
+            <button class="btn btn-primary" data-bs-target="#reportFormTutorial3" data-bs-toggle="modal" data-bs-dismiss="modal">Next</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- Last Tutorial Part -->
+    <div class="modal fade" id="reportFormTutorial3" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="reportFormTutorialLabel3" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportFormTutorialLabel3">Report Incident Tutorial</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body justify-content-center text-center">
+            <p> 
+              Now you understand the causes and 
+              risks of air pollution, you can go
+              ahead and take a look at the reporting
+              form.
+            </p>
+            <!-- <a href="report.html" class="btn btn-primary py-sm-3 px-sm-4 justify-content-center">Report Incident</a> -->
+          </div>
+          <div class="modal-footer">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" >
+              <label class="form-check-label" for="flexCheckChecked">
+                Don't Show Again 
+              </label>
+            </div>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Finish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -190,6 +237,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/report.js"></script>
 </body>
 
 </html>

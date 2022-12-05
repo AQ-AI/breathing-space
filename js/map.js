@@ -678,8 +678,8 @@ map.on('idle', () => {
 
           //   add a popup to the new point with a textarea input field
           const htmlContainer = document.createElement("div");
-          const title = document.createElement("h3");
-          title.textContent = location;
+          const title = document.createElement("h4");
+          title.textContent = "Suggest sensor location at " + location;
 
           // create name and email input fields
           const nameInput = document.createElement("input");
@@ -701,7 +701,7 @@ map.on('idle', () => {
           // create description input
           const textarea = document.createElement("textarea");
           textarea.id = "description";
-          textarea.placeholder = "description";
+          textarea.placeholder = "reason for sensor location";
           textarea.style.resize = "none";
 
           // create submit button

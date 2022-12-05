@@ -191,7 +191,6 @@ body {
   line-height: 18px;
   margin-bottom: 40px;
   bottom: 0;
-
 }
 
 /* landuse-legend */
@@ -206,6 +205,7 @@ body {
 /* adjust legend info */
 #legend-title,
 #legend-description {
+  color: #fff;
   margin: 0.5rem 0;
 }
 

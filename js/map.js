@@ -111,27 +111,27 @@ JF.getFormSubmissions("223104390365146", function (response) {
 
     // create legend
     const legend = document.getElementById("legend");
-  
+
     //   create a title for the legend
     const title = document.createElement("h2");
     title.id = "legend-title";
     title.textContent = "Congestion";
     legend.appendChild(title);
-  
+
     //   create a child element for the legend explaining the metric
     const description = document.createElement("p");
     description.id = "legend-description";
     description.textContent = "Average Annual Daily Traffic";
     legend.appendChild(description);
-  
+
     //   create a container for the actual legend items
     const ramp = document.createElement("div");
     ramp.className = "legend-items";
-  
-    
+
+
     // get the values and color for the legend from the same scale as the choropleth layer
-    const [legendValues, legendColors] = [[0,150,1000,132139], ["hsl(100, 89%, 52%)", "hsl(54, 91%, 46%)","hsl(0, 91%, 46%)","hsl(0, 87%, 30%)"]];
-    
+    const [legendValues, legendColors] = [[0, 150, 1000, 132139], ["hsl(100, 89%, 52%)", "hsl(54, 91%, 46%)", "hsl(0, 91%, 46%)", "hsl(0, 87%, 30%)"]];
+
     //   create a legend item for each value and color
     legendValues.forEach((layer, i) => {
       const color = legendColors[i];
@@ -139,7 +139,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
       const key = document.createElement("div");
       key.className = "legend-key";
       key.style.backgroundColor = color;
-  
+
       const value = document.createElement("div");
       value.innerHTML = `${layer}`;
       item.appendChild(key);
@@ -345,23 +345,23 @@ JF.getFormSubmissions("223104390365146", function (response) {
   });
 
   // After the last frame rendered before the map enters an "idle" state.
-map.on('idle', () => {
-  console.log(map.getStyle().layers)
-  // If these two layers were not added to the map, abort
-  if (!map.getLayer('deckgl-circle')) {
+  map.on('idle', () => {
+    console.log(map.getStyle().layers)
+    // If these two layers were not added to the map, abort
+    if (!map.getLayer('deckgl-circle')) {
       return;
-  }
+    }
 
-  // Enumerate ids of the layers.
-  const toggleableLayerIds = [['penn_traffic', 'Congestion']];
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = [['penn_traffic', 'Congestion']];
 
-  // Set up the corresponding toggle button for each layer.
-  for (const id_pair of toggleableLayerIds) {
-    button_name = id_pair[1]
-    id = id_pair[0]
+    // Set up the corresponding toggle button for each layer.
+    for (const id_pair of toggleableLayerIds) {
+      button_name = id_pair[1]
+      id = id_pair[0]
       // Skip layers that already have a button set up.
       if (document.getElementById(id)) {
-          continue;
+        continue;
       }
 
       // Create a link.
@@ -373,33 +373,33 @@ map.on('idle', () => {
 
       // Show or hide layer when the toggle is clicked.
       link.onclick = function (e) {
-          const clickedLayer = this.id;
-          e.preventDefault();
-          e.stopPropagation();
+        const clickedLayer = this.id;
+        e.preventDefault();
+        e.stopPropagation();
 
-          const visibility = map.getLayoutProperty(
-              clickedLayer,
-              'visibility'
+        const visibility = map.getLayoutProperty(
+          clickedLayer,
+          'visibility'
+        );
+
+        // Toggle layer visibility by changing the layout object's visibility property.
+        if (visibility === 'visible') {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+          this.className = '';
+        } else {
+          this.className = 'active';
+          map.setLayoutProperty(
+            clickedLayer,
+            'visibility',
+            'visible'
           );
-
-          // Toggle layer visibility by changing the layout object's visibility property.
-          if (visibility === 'visible') {
-              map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-              this.className = '';
-          } else {
-              this.className = 'active';
-              map.setLayoutProperty(
-                  clickedLayer,
-                  'visibility',
-                  'visible'
-              );
-          }
+        }
       };
 
       const layers = document.getElementById('menu');
       layers.appendChild(link);
-  }
-});
+    }
+  });
   // limit the search engine boundary extent to greater Boston
   const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
 
@@ -647,7 +647,7 @@ map.on('idle', () => {
         // submit the data to jotform and remove the popup
         popup.remove();
         JF.createFormSubmission(
-          "223144210321032",
+          "223193774186060",
           submission,
           function (response) {
             console.log("submission response", response);

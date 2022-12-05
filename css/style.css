@@ -172,7 +172,7 @@ h6,
     align-items: center;
     justify-content: center;
     text-align: center;
-    background:#2fedca5c;
+    /* background:white; */
     z-index: 1;
 }
 
@@ -518,9 +518,9 @@ h6,
 }
 
 .copyright a {
-    color: #FFFFFF;
+    color: black;
 }
 
 .copyright a:hover {
-    color: var(--primary);
+    color: white;
 }

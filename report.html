@@ -79,7 +79,7 @@
     <!-- Copyright End -->
 
      <!-- First Tutorial Part -->
-     <div class="modal fade " id="reportFormTutorial1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="reportFormTutorialLabel1" tabindex="-1">
+     <div class="modal fade no-show" id="reportFormTutorial1" data-bs-backdrop="static" data-bs-keyboard="false" style="display: none !important;" aria-hidden="true" aria-labelledby="reportFormTutorialLabel1" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -101,6 +101,24 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <!-- <div class="modal fade" id="reportFormTutorial1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="reportFormLabelTutorial1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reportFormLabelTutorial1">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+          </div>
+        </div>
+      </div>
+    </div> -->
 
     <!-- Second Tutorial Part -->
     <div class="modal fade" data-bs-interval="false" id="reportFormTutorial2" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true" aria-labelledby="reportFormTutorialLabel2" tabindex="-1">
@@ -218,7 +236,7 @@
                 Don't Show Again 
               </label>
             </div>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Finish</button>
+            <button type="button" class="btn btn-primary" id="reportCache" data-bs-dismiss="modal">Finish</button>
           </div>
         </div>
       </div>

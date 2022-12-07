@@ -1,0 +1,4 @@
+.carousel-inner > .item {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+}

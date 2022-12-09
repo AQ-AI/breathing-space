@@ -1,4 +1,4 @@
-$(window).on('load', function() {
+$(window).on('load', function () {
   $('#reportFormTutorial1').modal('show');
 });
 
@@ -449,7 +449,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
           }
           const lookup = "name";
           const entry = responses[i].answers[answer].name;
-
           // convert lat and long to numbers from strings
           if (entry === "latitude" || entry === "longitude") {
             currentAnswer = parseFloat(currentAnswer);
@@ -458,7 +457,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
           submissionProps.properties[responses[i].answers[answer][lookup]] =
             currentAnswer;
         });
-        // console.log(submissionProps.properties);
+        console.log(submissionProps.properties);
 
         submissionProps.geometry["coordinates"] = [
           submissionProps.properties.longitude,

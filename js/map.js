@@ -19,15 +19,15 @@ map.on("style.load", () => {
     });
 });
 
-// limit the search engine boundary extent to the center of Boston
-const bostonBounds = [-71.191247, 42.227911, -70.648072, 42.450118];
+// limit the search engine boundary extent to the center of philadelphia
+const phillyBounds = [-75.295626, 39.865930, -74.966036, 40.046464];
 
 // Initialize the geocoder aka the search engine
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken, // Set the access token
     mapboxgl: mapboxgl, // Set the mapbox-gl instance
-    placeholder: "Search Boston", //placeholer text for the search bar
-    bbox: bostonBounds, //limit search results to Philadelphia bounds
+    placeholder: "Search Philly", //placeholer text for the search bar
+    bbox: phillyBounds, //limit search results to Philadelphia bounds
 });
 
 // Add the geocoder to the map
@@ -259,6 +259,61 @@ JF.getFormSubmissions("223104390365146", function (response) {
     });
     document.body.appendChild(locationButton);
 });
+// After the last frame rendered before the map enters an "idle" state.
+map.on('idle', () => {
+    console.log(map.getStyle().layers)
+    // If these two layers were not added to the map, abort
+    if (!map.getLayer('deckgl-circle')) {
+        return;
+    }
+
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = [['penn_traffic', 'Congestion']];
+
+    // Set up the corresponding toggle button for each layer.
+    for (const id_pair of toggleableLayerIds) {
+        button_name = id_pair[1]
+        id = id_pair[0]
+        // Skip layers that already have a button set up.
+        if (document.getElementById(id)) {
+            continue;
+        }
+
+        // Create a link.
+        const link = document.createElement('a');
+        link.id = id;
+        link.href = '#';
+        link.textContent = button_name;
+        link.className = 'active';
+
+        // Show or hide layer when the toggle is clicked.
+        link.onclick = function (e) {
+            const clickedLayer = this.id;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const visibility = map.getLayoutProperty(
+                clickedLayer,
+                'visibility'
+            );
+
+            // Toggle layer visibility by changing the layout object's visibility property.
+            if (visibility === 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(
+                    clickedLayer,
+                    'visibility',
+                    'visible'
+                );
+            }
+        };
+        const layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }
+});
 
 // Create a function to access the jotform submissions . Format: (formID, callback)
 function getSubmissions() {
@@ -373,10 +428,10 @@ function getSubmissions() {
                 type: "circle",
                 source: "submissions",
                 paint: {
-                    "circle-radius": 10,
-                    "circle-color": "#9198e5",
+                    "circle-radius": 5,
+                    "circle-color": "#2e8c29",
                     "circle-stroke-width": 1,
-                    "circle-stroke-color": "#00e4f4",
+                    "circle-stroke-color": "#000000",
                 },
             });
         });

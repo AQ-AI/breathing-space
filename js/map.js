@@ -37,6 +37,73 @@ JF.initialize({ apiKey: "e83551f0a2681795a8e8ae7d06535735" });
 
 //ENTER YOUR JOTFORM API KEY HERE
 
+JF.getFormSubmissions("223104390365146", function (response) {
+    console.log(response);
+    // array to store all the submissions: we will use this to create the map
+    const incidents = [];
+    // for each response
+    for (var i = 0; i < response.length; i++) {
+        const incidentProps = {};
+        // add all fields of response.answers to our object
+        const keys = Object.keys(response[i].answers);
+        keys.forEach((answer) => {
+            const lookup = response[i].answers[answer].cfname ? "cfname" : "name";
+            incidentProps[response[i].answers[answer][lookup]] =
+                response[i].answers[answer].answer;
+        });
+        if (incidentProps["Address Map Locator"] == null) {
+            // console.log("hopping out!");
+            continue;
+        }
+        // convert location coordinates string to float array
+        incidentProps["Address Map Locator"] = incidentProps[
+            "Address Map Locator"
+        ]
+            .split(/\r?\n/)
+            .map((x) => parseFloat(x.replace(/[^\d.-]/g, "")));
+
+        // console.log(submissionProps);
+
+        // add submission to submissions array
+        incidents.push(incidentProps);
+    }
+    const { MapboxLayer, ScatterplotLayer } = deck;
+    const firstLabelLayerId = map
+        .getStyle()
+        .layers.find((layer) => layer.type === "symbol").id;
+
+    map.addLayer(
+        new MapboxLayer({
+            id: "deckgl-circle",
+            type: ScatterplotLayer,
+            data: incidents,
+            getPosition: (d) => {
+                return d["Address Map Locator"];
+            },
+            // Styles
+            radiusUnits: "pixels",
+            getRadius: 10,
+            opacity: 0.7,
+            stroked: false,
+            filled: true,
+            radiusScale: 3,
+            getFillColor: [255, 0, 0],
+            pickable: true,
+            autoHighlight: true,
+            highlightColor: [255, 255, 255, 255],
+            parameters: {
+                depthTest: false,
+            },
+            onClick: (info) => {
+                //ADD NEW INPUT TO GETIMAGE GALLERY:
+                getImageGallery(info.object.fileUpload, info.object.describeThe);
+                flyToClick(info.object["Address Map Locator"]);
+            },
+        }),
+        firstLabelLayerId
+    )
+}
+);
 // Create a function to access the jotform submissions . Format: (formID, callback)
 function getSubmissions() {
     // ENTER YOUR NEW FORM SUBMISSION ID HERE
@@ -95,6 +162,48 @@ function getSubmissions() {
 
         // add source after map load
         map.on("load", () => {
+            // create legend
+            const legend = document.getElementById("legend");
+
+            //   create a title for the legend
+            const title = document.createElement("h2");
+            title.id = "legend-title";
+            title.textContent = "Congestion";
+            legend.appendChild(title);
+            //   create a child element for the legend explaining the metric
+            const description = document.createElement("p");
+            description.id = "legend-description";
+            description.textContent = "Average Annual Daily Traffic";
+            legend.appendChild(description);
+
+            //   create a container for the actual legend items
+            const ramp = document.createElement("div");
+            ramp.className = "legend-items";
+
+            // get the values and color for the legend from the same scale as the choropleth layer
+            const [legendValues, legendColors] = [[0, 150, 1000, 132139], ["hsl(100, 89%, 52%)", "hsl(54, 91%, 46%)", "hsl(0, 91%, 46%)", "hsl(0, 87%, 30%)"]];
+
+            //   create a legend item for each value and color
+            legendValues.forEach((layer, i) => {
+                const color = legendColors[i];
+                const item = document.createElement("div");
+                const key = document.createElement("div");
+                key.className = "legend-key";
+                key.style.backgroundColor = color;
+
+                const value = document.createElement("div");
+                value.innerHTML = `${layer}`;
+                item.appendChild(key);
+                item.appendChild(value);
+                ramp.appendChild(item);
+            });
+            //  add the legend items to the legend
+            legend.appendChild(ramp);
+
+            const firstLabelLayerId = map
+                .getStyle()
+                .layers.find((layer) => layer.type === "symbol").id;
+
             map.addSource("submissions", {
                 type: "geojson",
                 data: {

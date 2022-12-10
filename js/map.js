@@ -24,28 +24,27 @@ setTimeout(() => {  console.log("hello"); console.log(phillyCensus); }, 5000);
 JF.initialize({ apiKey: "e83551f0a2681795a8e8ae7d06535735" });
 
 JF.getFormSubmissions("223104390365146", function (response) {
-  console.log(response);
   // array to store all the submissions: we will use this to create the map
-  const submissions = [];
+  const incidentSubmissions = [];
   // for each response
   for (var i = 0; i < response.length; i++) {
-    const submissionProps = {};
+    const incidentSubmissionProps = {};
 
     // add all fields of response.answers to our object
     const keys = Object.keys(response[i].answers);
     keys.forEach((answer) => {
       const lookup = response[i].answers[answer].cfname ? "cfname" : "name";
-      submissionProps[response[i].answers[answer][lookup]] =
+      incidentSubmissionProps[response[i].answers[answer][lookup]] =
         response[i].answers[answer].answer;
     });
-    if (submissionProps["Address Map Locator"] == null) {
+    if (incidentSubmissionProps["Address Map Locator"] == null) {
       // console.log("hopping out!");
       continue;
     }
     // console.log("hi");
-    console.log(submissionProps["Address Map Locator"]);
+    console.log(incidentSubmissionProps["Address Map Locator"]);
     // convert location coordinates string to float array
-    submissionProps["Address Map Locator"] = submissionProps[
+    incidentSubmissionProps["Address Map Locator"] = incidentSubmissionProps[
       "Address Map Locator"
     ]
       .split(/\r?\n/)
@@ -54,10 +53,10 @@ JF.getFormSubmissions("223104390365146", function (response) {
     // console.log(submissionProps);
 
     // add submission to submissions array
-    submissions.push(submissionProps);
+    incidentSubmissions.push(incidentSubmissionProps);
   }
 
-  // console.log(submissions);
+  console.log(incidentSubmissions);
 
   // Import Layers from DeckGL
   const { MapboxLayer, ScatterplotLayer } = deck;
@@ -162,7 +161,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
       new MapboxLayer({
         id: "deckgl-circle",
         type: ScatterplotLayer,
-        data: submissions,
+        data: incidentSubmissions,
         getPosition: (d) => {
           return d["Address Map Locator"];
         },
@@ -424,7 +423,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
   // Create a function to access the jotform submissions . Format: (formID, callback)
   function getSubmissions() {
     // ENTER YOUR NEW FORM SUBMISSION ID HERE
-    JF.getFormSubmissions("223104390365146", function (responses) {
+    JF.getFormSubmissions("223193774186060", function (responses) {
       // array to store all the submissions: we will use this to create the map
       const submissions = [];
       // for each responses
@@ -437,7 +436,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
           type: "Point",
         };
         submissionProps["properties"] = {};
-
         // add all fields of responses.answers to our object
         const keys = Object.keys(responses[i].answers);
         keys.forEach((answer) => {
@@ -457,19 +455,19 @@ JF.getFormSubmissions("223104390365146", function (response) {
           submissionProps.properties[responses[i].answers[answer][lookup]] =
             currentAnswer;
         });
-        console.log(submissionProps.properties);
 
         submissionProps.geometry["coordinates"] = [
           submissionProps.properties.longitude,
           submissionProps.properties.latitude,
         ];
-
         // add submission to submissions array
         submissions.push(submissionProps);
       }
+      console.log(submissions)
       // see if the source exists
       if (map.getSource("submissions")) {
         // update the source
+        console.log("here")
         map.getSource("submissions").setData({
           type: "FeatureCollection",
           features: submissions,
@@ -481,9 +479,9 @@ JF.getFormSubmissions("223104390365146", function (response) {
         map.addSource("submissions", {
           type: "geojson",
           data: {
-            type: "FeatureCollection",
-            features: submissions,
-          },
+            type: "Feature",
+            features: submissions
+          }
         });
 
         map.addLayer({
@@ -640,7 +638,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
       submission[7] = newPoint.geometry.coordinates[0];
       // description
       submission[9] = newPoint.properties.description;
-
       if (
         // if everything has been filled out
         newPoint.properties.description &&
@@ -653,7 +650,6 @@ JF.getFormSubmissions("223104390365146", function (response) {
           "223193774186060",
           submission,
           function (response) {
-            console.log("submission response", response);
 
             // assign a timeout to the global timeout variable and reload the map after 3 seconds
             timeout = setTimeout(() => {

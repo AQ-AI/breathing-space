@@ -214,6 +214,35 @@ body {
   display: flex;
 }
 
+.legend-section {
+  padding-bottom: 20px
+}
+
+.legend-section-no-check {
+  float:left;
+  display:inline;
+  width: 90%;
+}
+
+.legend-check {
+  top:50%;
+  float:left;
+  display:inline;
+  width:9%;
+}
+
+.legend-point {
+  float:left;
+  display:inline;
+  width: 15%;
+}
+
+.legend-point-label {
+  float:left;
+  display: inline;
+  width:85%;
+}
+
 .legend-item-label {
   margin: 0 0.5rem;
   display: inline-block;

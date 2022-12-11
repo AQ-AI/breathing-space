@@ -51,20 +51,11 @@ JF.getFormSubmissions("223104390365146", function (response) {
             incidentProps[response[i].answers[answer][lookup]] =
                 response[i].answers[answer].answer;
         });
-        if (incidentProps["Location Coordinates"] == null) {
-            response[i].answers[15].answer
-        }
-        // incidentProps["Location Coordinates"] = response[i].answers[15].answer
+
+        incidentProps["Location Coordinates"] = response[i].answers[22].answer.split(/\r?\n/)
+            .map((x) => parseFloat(x.replace(/[^\d.-]/g, ""))).slice(0, 2);
         // convert location coordinates string to float array
-        incidentProps["Location Coordinates"] = incidentProps[
-            "undefined"
-        ]
-            .split(/\r?\n/)
-            .map((x) => parseFloat(x.replace(/[^\d.-]/g, "")));
         console.log(incidentProps)
-
-        // console.log(submissionProps);
-
         // add submission to submissions array
         incidents.push(incidentProps);
     }
@@ -83,12 +74,14 @@ JF.getFormSubmissions("223104390365146", function (response) {
             },
             // Styles
             radiusUnits: "pixels",
-            getRadius: 10,
+            getRadius: 5,
             opacity: 0.7,
-            stroked: false,
+            stroked: true,
             filled: true,
             radiusScale: 3,
-            getFillColor: [255, 0, 0],
+            getFillColor: [252, 186, 3],
+            lineWidthMinPixels: 1,
+            getLineColor: [0, 0, 0],
             pickable: true,
             autoHighlight: true,
             highlightColor: [255, 255, 255, 255],
@@ -380,25 +373,25 @@ function getSubmissions() {
         }
 
         map.on("load", () => {
-          map.addSource("submissions", {
-            type: "geojson",
-            data: {
-                type: "FeatureCollection",
-                features: submissions,
-            },
-          });
-        
-          map.addLayer({
-              id: "submissions",
-              type: "circle",
-              source: "submissions",
-              paint: {
-                  "circle-radius": 5,
-                  "circle-color": "#2e8c29",
-                  "circle-stroke-width": 1,
-                  "circle-stroke-color": "#000000",
-              },
-          });
+            map.addSource("submissions", {
+                type: "geojson",
+                data: {
+                    type: "FeatureCollection",
+                    features: submissions,
+                },
+            });
+
+            map.addLayer({
+                id: "submissions",
+                type: "circle",
+                source: "submissions",
+                paint: {
+                    "circle-radius": 5,
+                    "circle-color": "#2e8c29",
+                    "circle-stroke-width": 1,
+                    "circle-stroke-color": "#000000",
+                },
+            });
         });
     });
 }
@@ -409,90 +402,90 @@ function getSubmissions() {
 
 // Function for drawing circles in legend
 function draw_circle(canvas, size, color) {
-  console.log("calling draw circle with color", color)
-  canvas.width = 30
-  canvas.height = 30
-  var ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = "#000000";
-  //ctx.lineWidth = 2
-  ctx.fillStyle = color;
-  console.log("my fill style is ", ctx.fillStyle)
-  console.log(ctx.strokeStyle)
-  ctx.beginPath();
-  ctx.arc(15, 15, size, 0, Math.PI * 2, true);
-  ctx.fill();
-  ctx.stroke();
+    console.log("calling draw circle with color", color)
+    canvas.width = 30
+    canvas.height = 30
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = "#000000";
+    //ctx.lineWidth = 2
+    ctx.fillStyle = color;
+    console.log("my fill style is ", ctx.fillStyle)
+    console.log(ctx.strokeStyle)
+    ctx.beginPath();
+    ctx.arc(15, 15, size, 0, Math.PI * 2, true);
+    ctx.fill();
+    ctx.stroke();
 }
 
 // Function for defining point elements on legend
 function define_point(color, size, name) {
-  const point_label = document.createElement("div")
-  point_label.className = "legend-point-label"
-  const label_text = document.createElement("p")
-  label_text.textContent = name;
-  point_label.appendChild(label_text)
+    const point_label = document.createElement("div")
+    point_label.className = "legend-point-label"
+    const label_text = document.createElement("p")
+    label_text.textContent = name;
+    point_label.appendChild(label_text)
 
-  const point_drawing = document.createElement("div")
-  point_drawing.className = "legend-point"
-  const point_canvas = document.createElement("canvas", {width:100, height:100})
-  console.log("calling draw circle with color", color)
-  draw_circle(point_canvas,size, color)
-  point_drawing.appendChild(point_canvas)
+    const point_drawing = document.createElement("div")
+    point_drawing.className = "legend-point"
+    const point_canvas = document.createElement("canvas", { width: 100, height: 100 })
+    console.log("calling draw circle with color", color)
+    draw_circle(point_canvas, size, color)
+    point_drawing.appendChild(point_canvas)
 
-  const point = document.createElement("div");
-  point.className = "legend-section"
-  point.appendChild(point_drawing)
-  point.appendChild(point_label)
+    const point = document.createElement("div");
+    point.className = "legend-section"
+    point.appendChild(point_drawing)
+    point.appendChild(point_label)
 
-  return point
+    return point
 }
 
 function add_checkbox(content, layer_id) {
-  const existing_content = document.createElement("legend-section-no-check");
-  existing_content.className = "legend-section-no-check"
-  existing_content.appendChild(content)
+    const existing_content = document.createElement("legend-section-no-check");
+    existing_content.className = "legend-section-no-check"
+    existing_content.appendChild(content)
 
-  const checkbox = document.createElement("input")
-  checkbox.type = "checkbox"
-  checkbox.id = layer_id
-  checkbox.checked = true
+    const checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.id = layer_id
+    checkbox.checked = true
 
-  checkbox.onclick = function (e) {
-    const clickedLayer = this.id;
-    e.stopPropagation();
+    checkbox.onclick = function (e) {
+        const clickedLayer = this.id;
+        e.stopPropagation();
 
-    const visibility = map.getLayoutProperty(
-        clickedLayer,
-        'visibility'
-    );
-
-    console.log(visibility)
-
-    // Toggle layer visibility by changing the layout object's visibility property.
-    if (visibility != 'none') {
-        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-        this.className = '';
-    } else {
-        this.className = 'active';
-        map.setLayoutProperty(
+        const visibility = map.getLayoutProperty(
             clickedLayer,
-            'visibility',
-            'visible'
+            'visibility'
         );
-    }
-  };
 
-  const checkbox_div = document.createElement("div")
-  checkbox_div.className = "legend-check"
-  checkbox_div.appendChild(checkbox)
+        console.log(visibility)
 
-  const with_check = document.createElement("div")
-  with_check.appendChild(existing_content)
-  with_check.appendChild(checkbox_div)
+        // Toggle layer visibility by changing the layout object's visibility property.
+        if (visibility != 'none') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(
+                clickedLayer,
+                'visibility',
+                'visible'
+            );
+        }
+    };
 
-  return with_check
+    const checkbox_div = document.createElement("div")
+    checkbox_div.className = "legend-check"
+    checkbox_div.appendChild(checkbox)
+
+    const with_check = document.createElement("div")
+    with_check.appendChild(existing_content)
+    with_check.appendChild(checkbox_div)
+
+    return with_check
 }
 
 // Initialize title and content for traffic section of legend
@@ -526,11 +519,15 @@ traffic.appendChild(traffic_content);
 traffic_with_check = add_checkbox(traffic, "penn_traffic")
 
 // Initialize title and content for ECHO API data
-echo = add_checkbox(define_point("#74048f", 10, "Facilities with Pollution Law Violations"), "echo-api-bv863a")
+echo = add_checkbox(define_point("#74048f", 7, "Facilities with Pollution Law Violations"), "echo-api-bv863a")
 
 // Initialize title and content for sensor location submission data
 sensor_recs = add_checkbox(define_point("#2e8c29", 7, "Suggested Air Quality Sensor Locations"), "submissions")
 
+// Initialize title and content for air pollution sensor data
+air_sensors = add_checkbox(define_point("#291e9e", 10, "Current Locations of Air Quality Sensors"), "air")
+
+incident_reports = add_checkbox(define_point("#fcba03", 10, "Current air pollution incidents"), "incidents")
 
 // Initialize dictionary of legend sections
 legend_sections = {
@@ -539,67 +536,76 @@ legend_sections = {
         "content": traffic_with_check,
     },
     "echo": {
-      "on": true,
-      "content": echo,
+        "on": true,
+        "content": echo,
     },
     "sensor_recs": {
-      "on": true,
-      "content": sensor_recs
+        "on": true,
+        "content": sensor_recs
+    },
+    "air_sensors":
+    {
+        "on": true,
+        "content": air_sensors
+    },
+    incident_reports: {
+        "on": true,
+        "content": incident_reports
     }
 }
 
 // When the map loads, load the legend
 map.on("load", () => {
-  // create legend
-  const legend = document.getElementById("legend");
+    // create legend
+    const legend = document.getElementById("legend");
 
-  //   create a title for the legend
-  const title = document.createElement("h2");
-  title.id = "legend-title";
-  title.textContent = "Legend";
-  legend.appendChild(title);
-  //   create a child element for the legend explaining the metric
+    //   create a title for the legend
+    const title = document.createElement("h2");
+    title.id = "legend-title";
+    title.textContent = "Legend";
+    legend.appendChild(title);
+    //   create a child element for the legend explaining the metric
 
-  for (let [_, section] of Object.entries(legend_sections)){
-    if(section["on"]){
-      legend.appendChild(section["content"])
+    for (let [_, section] of Object.entries(legend_sections)) {
+        if (section["on"]) {
+            legend.appendChild(section["content"])
+        }
     }
-  }
 
-  const firstLabelLayerId = map
-      .getStyle()
-      .layers.find((layer) => layer.type === "symbol").id;
+    const firstLabelLayerId = map
+        .getStyle()
+        .layers.find((layer) => layer.type === "symbol").id;
 
-  console.log(firstLabelLayerId)
+    console.log(firstLabelLayerId)
 
-  /*checkbox = document.createElement("input")
-  checkbox.type = "checkbox"
-  checkbox.id = "penn_traffic"
-
-  checkbox.onclick = function (e) {
-    const clickedLayer = this.id;
-    e.stopPropagation();
-
-    const visibility = map.getLayoutProperty(
-        clickedLayer,
-        'visibility'
-    );
-
-    // Toggle layer visibility by changing the layout object's visibility property.
-    if (visibility === 'visible') {
-        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-        this.className = '';
-    } else {
-        this.className = 'active';
-        map.setLayoutProperty(
-            clickedLayer,
-            'visibility',
-            'visible'
-        );
-    }
-  };
-
-  legend.appendChild(checkbox)*/
+    /*checkbox = document.createElement("input")
+    checkbox.type = "checkbox"
+    checkbox.id = "penn_traffic"
+  
+    checkbox.onclick = function (e) {
+      const clickedLayer = this.id;
+      e.stopPropagation();
+  
+      const visibility = map.getLayoutProperty(
+          clickedLayer,
+          'visibility'
+      );
+  
+      // Toggle layer visibility by changing the layout object's visibility property.
+      if (visibility === 'visible') {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+          this.className = '';
+      } else {
+          this.className = 'active';
+          map.setLayoutProperty(
+              clickedLayer,
+              'visibility',
+              'visible'
+          );
+      }
+    };
+  
+    legend.appendChild(checkbox)*/
 });
 
 // END LEGEND

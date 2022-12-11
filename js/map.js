@@ -527,6 +527,7 @@ sensor_recs = add_checkbox(define_point("#2e8c29", 7, "Suggested Air Quality Sen
 // Initialize title and content for air pollution sensor data
 air_sensors = add_checkbox(define_point("#291e9e", 10, "Current Locations of Air Quality Sensors"), "air")
 
+incident_reports = add_checkbox(define_point("#fcba03", 10, "Current air pollution incidents"), "incidents")
 
 // Initialize dictionary of legend sections
 legend_sections = {
@@ -546,6 +547,10 @@ legend_sections = {
     {
         "on": true,
         "content": air_sensors
+    },
+    incident_reports: {
+        "on": true,
+        "content": incident_reports
     }
 }
 

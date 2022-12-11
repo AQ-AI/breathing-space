@@ -118,6 +118,12 @@ JF.getFormSubmissions("223104390365146", function (response) {
             // Make the layer visible by default.
             visibility: "visible",
         },
+        paint: {
+            "circle-radius": 10,
+            "circle-color": "#291e9e",
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#000000",
+        },
     });
     // Center the map on the coordinates of any clicked circle from the 'circle' layer.
     map.on("click", "air", (e) => {

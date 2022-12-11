@@ -851,3 +851,7 @@ const basemapPopup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false,
 });
+
+$(window).on('load', function() {
+  $('#mapFormTutorial1').modal('show');
+});

@@ -59,9 +59,9 @@ JF.getFormSubmissions("223104390365146", function (response) {
         incidentProps["Location Coordinates"] = incidentProps[
             "undefined"
         ]
-            .split(/\r?\n/)
-            .map((x) => parseFloat(x.replace(/[^\d.-]/g, "")));
-        console.log(incidentProps)
+        // .split(/\r?\n/)
+        // .map((x) => parseFloat(x.replace(/[^\d.-]/g, "")));
+        // console.log(incidentProps)
 
         // console.log(submissionProps);
 
@@ -126,12 +126,12 @@ JF.getFormSubmissions("223104390365146", function (response) {
         },
     });
     // Center the map on the coordinates of any clicked circle from the 'circle' layer.
-    map.on("click", "air", (e) => {
-        // console.log("i get here", e.features[0].geometry.coordinates);
-        map.flyTo({
-            center: e.features[0].geometry.coordinates,
-        });
-    });
+    // map.on("click", "air", (e) => {
+    //     // console.log("i get here", e.features[0].geometry.coordinates);
+    //     map.flyTo({
+    //         center: e.features[0].geometry.coordinates,
+    //     });
+    // });
     function getImageGallery(images, text) {
         const imageGallery = document.createElement("div");
         imageGallery.id = "image-gallery";

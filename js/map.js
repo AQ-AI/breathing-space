@@ -98,7 +98,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
     );
     map.addSource("air-data", {
         type: "geojson",
-        data: "https://opendata.arcgis.com/datasets/1839b35258604422b0b520cbb668df0d_0.geojson",
+        data: "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/LATEST_CORE_SITE_READINGS/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
     });
 
     map.addLayer({
@@ -670,9 +670,10 @@ map.on("mouseenter", "air", (e) => {
     // create some HTML objects to render in the popup
     const htmlContainer = document.createElement("div");
     const title = document.createElement("h3");
-    title.textContent = e.features[0].properties.placeName;
+    title.textContent = e.features[0].properties.SITE_ADDRESS;
     const description = document.createElement("p");
-    description.innerHTML = e.features[0].properties.undefined;
+
+    description.innerHTML = "PM2.5 concentrations: " + e.features[0].properties.PM25_UG_M3;
 
     // append the HTML objects to the container
     htmlContainer.appendChild(title);

@@ -54,6 +54,7 @@
 
     <!-- Map Stylesheet -->
     <link href="css/map.css" rel="stylesheet">
+    <link href="css/legend.css" rel="stylesheet">
 </head>
 
 <body>
@@ -245,6 +246,26 @@
     <!-- legend -->
     <div class="map-overlay" id="legend"></div>
 
+    <button type="button" onclick="toggleLegend()" id="legend-collapse" class="btn btn-dark btn-lg">
+      Hide Legend 
+    </button>
+
+    <button 
+        id="map-info" 
+        class="btn btn-primary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#map-info-content"
+        aria-expanded="false"
+        aria-controls="collapseExample"
+    >
+        &#9432;
+    </button>
+
+    <div id="map-info-content" class="collapse">
+        Click anywhere to suggest a sensor location.
+    </div>
+
 
     <!-- Copyright Start -->
     <div class="container-fluid copyright py-4">
@@ -278,6 +299,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/legend.js"></script>
     <!-- <script src="js/geocode.js"></script> -->
 </body>
 

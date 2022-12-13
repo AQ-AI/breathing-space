@@ -3,6 +3,7 @@ const map = new mapboxgl.Map({
     container: "map", // Container ID
     style: "mapbox://styles/airpollphilly/clawv4g4p000014lgrz9qaljy", // Map style to use
     center: [-75.1652, 39.9526], // center on philadelphia
+    // center:[-71.0589, 42.3601], // center on boston
     zoom: 12, // Starting zoom level
     projection: "globe",
 });
@@ -126,57 +127,95 @@ JF.getFormSubmissions("223104390365146", function (response) {
         });
     });
     function getImageGallery(images, text) {
-        const imageGallery = document.createElement("div");
-        imageGallery.id = "image-gallery";
+        /*
+          const imageGallery = document.createElement("div");
+          imageGallery.id = "image-gallery";
+  
+          
+          for (var i = 0; i < images.length; i++) {
+              const image = document.createElement("img");
+              image.src = images[i];
+              image.style = "max-width:70%; max-height:70%;";
+              image.className += "img-fluid p-3";
+              imageGallery.appendChild(image);
+          }
+  
+          const image_div = document.createElement("div")
+          image_div.className = "image-gallery-image-div"
+          const image = document.createElement("img")
+          image.src = images[0]
+          image.style = "max-width:30%;"
+          image_div.appendChild(image)
+  
+          imageGallery.appendChild(image_div)
+  
+          //   add exit button to image gallery
+          const exitButton = document.createElement("button");
+          exitButton.id = "exit-button";
+          exitButton.innerHTML = "X";
+          exitButton.addEventListener("click", () => {
+              document.getElementById("image-gallery").remove();
+          });
+  
+          //   stylize the exit button to look good: this can also be a css class
+          exitButton.style.position = "fixed";
+          exitButton.style.top = "15%";
+          exitButton.style.right = "15%";
+          exitButton.style.borderRadius = "0";
+          exitButton.style.padding = "1rem";
+          exitButton.style.fontSize = "2rem";
+          exitButton.style.fontWeight = "bold";
+          exitButton.style.backgroundColor = "white";
+          exitButton.style.border = "none";
+          exitButton.style.cursor = "pointer";
+          exitButton.style.zIndex = "1";
+          imageGallery.appendChild(exitButton);
+  
+          //how does each exit button and text correspond to each other?
+          //how do new images get added with each new submission?
+  
+          // add text to image gallery
+          const textDiv = document.createElement("div");
+          textDiv.className = "image-gallery-text";
+          textDiv.id = "image-gallery-text";
+          textDiv.innerHTML = text;
+  
+          // add fixed styling if in modal view
+          //textDiv.style.position = "fixed";
+          //textDiv.style.top = "15%";
+          //textDiv.style.left = "15%";
+          // textDiv.style.right = "0";
+          textDiv.style.borderRadius = "2";
+          textDiv.style.padding = "1rem";
+          textDiv.style.fontSize = "1rem";
+  
+          imageGallery.appendChild(textDiv);
+  
+          */
 
-        for (var i = 0; i < images.length; i++) {
-            const image = document.createElement("img");
-            image.src = images[i];
-            image.style = "max-width:70%; max-height:70%;";
-            image.className += "img-fluid p-3";
-            imageGallery.appendChild(image);
-        }
+        const imageGallery = document.createElement("div")
+        imageGallery.className = "image-gallery"
+        imageGallery.id = "image-gallery"
 
-        //   add exit button to image gallery
+        const image = document.createElement("img")
+        image.src = images[0]
+        image.className = "image-gallery-image"
+        imageGallery.appendChild(image)
+
         const exitButton = document.createElement("button");
-        exitButton.id = "exit-button";
+        exitButton.className = "image-gallery-button";
+        exitButton.id = "image-gallery-button";
         exitButton.innerHTML = "X";
         exitButton.addEventListener("click", () => {
             document.getElementById("image-gallery").remove();
         });
+        imageGallery.appendChild(exitButton)
 
-        //   stylize the exit button to look good: this can also be a css class
-        exitButton.style.position = "fixed";
-        exitButton.style.top = "15%";
-        exitButton.style.right = "15%";
-        exitButton.style.borderRadius = "0";
-        exitButton.style.padding = "1rem";
-        exitButton.style.fontSize = "2rem";
-        exitButton.style.fontWeight = "bold";
-        exitButton.style.backgroundColor = "white";
-        exitButton.style.border = "none";
-        exitButton.style.cursor = "pointer";
-        exitButton.style.zIndex = "1";
-        imageGallery.appendChild(exitButton);
-
-        //how does each exit button and text correspond to each other?
-        //how do new images get added with each new submission?
-
-        // add text to image gallery
         const textDiv = document.createElement("div");
+        textDiv.className = "image-gallery-text";
         textDiv.id = "image-gallery-text";
-        textDiv.innerHTML = text;
-
-        // add fixed styling if in modal view
-        textDiv.style.position = "fixed";
-        textDiv.style.top = "15%";
-        textDiv.style.left = "15%";
-        // textDiv.style.right = "0";
-        textDiv.style.borderRadius = "2";
-        textDiv.style.padding = "1rem";
-        textDiv.style.fontSize = "1rem";
-
-        imageGallery.appendChild(textDiv);
+        textDiv.innerHTML = "<i>\"" + text + "\"</i>";
+        imageGallery.appendChild(textDiv)
 
         // append the image gallery to the body
         document.body.appendChild(imageGallery);
@@ -895,6 +934,6 @@ const basemapPopup = new mapboxgl.Popup({
     closeOnClick: false,
 });
 
-$(window).on('load', function() {
-  $('#mapFormTutorial1').modal('show');
+$(window).on('load', function () {
+    $('#mapFormTutorial1').modal('show');
 });

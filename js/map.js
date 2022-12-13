@@ -99,7 +99,7 @@ JF.getFormSubmissions("223104390365146", function (response) {
     );
     map.addSource("air-data", {
         type: "geojson",
-        data: "https://opendata.arcgis.com/datasets/1839b35258604422b0b520cbb668df0d_0.geojson",
+        data: "https://services.arcgis.com/fLeGjb7u4uXqeF9q/arcgis/rest/services/LATEST_CORE_SITE_READINGS/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson",
     });
 
     map.addLayer({
@@ -687,8 +687,51 @@ map.on("mouseenter", "submissions", (e) => {
     hoverPopup.setLngLat(coordinates).setHTML(htmlContainer.outerHTML).addTo(map);
 });
 
+
 // hide the hoverPopup when the mouse leaves the layer
 map.on("mouseleave", "submissions", () => {
+    // set the cursor back to default
+    map.getCanvas().style.cursor = "";
+    // remove the hoverPopup
+    hoverPopup.remove();
+});
+
+
+
+// add a hover event that shows a hoverPopup with the description
+map.on("mouseenter", "air", (e) => {
+    console.log(e)
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = "pointer";
+
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    console.log(e.features[0])
+    // create some HTML objects to render in the popup
+    const htmlContainer = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = e.features[0].properties.SITE_ADDRESS;
+    const description = document.createElement("p");
+
+    description.innerHTML = "PM2.5 concentrations: " + e.features[0].properties.PM25_UG_M3;
+
+    // append the HTML objects to the container
+    htmlContainer.appendChild(title);
+    htmlContainer.appendChild(description);
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the hoverPopup appears
+    // over the copy being pointed to.
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    // Populate the hoverPopup and set its coordinates
+    hoverPopup.setLngLat(coordinates).setHTML(htmlContainer.outerHTML).addTo(map);
+});
+
+
+// hide the hoverPopup when the mouse leaves the layer
+map.on("mouseleave", "air", () => {
     // set the cursor back to default
     map.getCanvas().style.cursor = "";
     // remove the hoverPopup

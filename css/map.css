@@ -7,7 +7,21 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-#image-gallery {
+figcaption {
+  background-color: black;
+  color: white;
+  font-style: italic;
+  padding: 2px;
+  text-align: center;
+  caption-side: top;
+
+}
+
+figure {
+  float: center;
+}
+
+/*#image-gallery {
   position: fixed;
   top: 0;
   left: 0;
@@ -23,6 +37,17 @@ body {
   cursor: pointer;
   flex-wrap: wrap;
   overflow: auto;
+  text-align:center;
+}*/
+
+/*
+#image-gallery {
+  text-align:center;
+  position:fixed;
+}
+
+.image-gallery-image-div {
+  text-align: center
 }
 
 #image-gallery-text,
@@ -30,12 +55,64 @@ body {
   color: white;
   background-color: black;
   padding: 1rem;
+  max-width: 30%;
 }
 
 #image-gallery-text {
-  /* add border radius to only bottom corners */
+  // add border radius to only bottom corners
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
+}*/
+
+.image-gallery {
+  position: absolute;
+  background: black;
+  margin:auto;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  color: white;
+  border: 1px solid white;
+  width: 50%;
+  height: 50%;
+  left:25%;
+  border-radius: 30px;
+
+}
+
+#image-gallery {
+  padding: 10px;
+  padding-bottom: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  margin: auto;
+  top:25%;
+  text-align: left;
+}
+
+.image-gallery-image {
+  object-fit: contain;
+  max-width: 90%;
+  max-height: 90%;
+  align-self: left;
+}
+
+.image-gallery-button {
+  background-color: #000;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#image-gallery-button {
+  position:absolute;
+  top:10px;
+  right:10px;
+  
 }
 
 #location-button:hover,
@@ -272,6 +349,11 @@ img {
  
   body {
       overflow: hidden;
+  }
+
+  .image-gallery {
+    max-height: 50%;
+    height: none;
   }
 
   .map-overlay {
